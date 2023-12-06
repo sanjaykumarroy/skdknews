@@ -1,0 +1,17 @@
+[
+    {
+      "title": "Article 1",
+      "image": "https://via.placeholder.com/300",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "title": "Article 2",
+      "image": "https://via.placeholder.com/300",
+      "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    },
+    {
+      "title": "Article 3",
+      "image": "https://via.placeholder.com/300",
+      "content": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    }
+  ]
