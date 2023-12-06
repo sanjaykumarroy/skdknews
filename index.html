@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Newspaper Theme</title>
     <style>
+        /* Your existing styles go here */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -58,6 +59,10 @@
             padding: 1rem;
             text-align: center;
         }
+        article {
+            cursor: pointer;
+            /* Add other styling for the clickable articles */
+        }
     </style>
 </head>
 <body>
@@ -81,15 +86,45 @@
             .then(articles => {
                 const articleSection = document.getElementById('articleSection');
 
-                articles.forEach(article => {
-                    const articleElement = document.createElement('article');
-                    articleElement.innerHTML = `
-                        <img src="${article.image}" alt="Article Image">
-                        <h2>${article.title}</h2>
-                        <p>${article.content}</p>
-                    `;
-                    articleSection.appendChild(articleElement);
+                // Get the article title from the URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const articleTitle = urlParams.get('article');
+
+                if (articleTitle) {
+                    // Filter the articles array to find the selected article
+                    const selectedArticle = articles.find(article => article.title === articleTitle);
+
+                    if (selectedArticle) {
+                        const articleElement = document.createElement('article');
+                        articleElement.innerHTML = `
+                            <img src="${selectedArticle.image}" alt="${selectedArticle.title} Image">
+                            <h2>${selectedArticle.title}</h2>
+                            <p>${selectedArticle.content}</p>
+                        `;
+                        articleSection.appendChild(articleElement);
+                    } else {
+                        // Handle case when the specified article is not found
+                        const errorMessage = document.createElement('p');
+                        errorMessage.textContent = 'Article not found';
+                        articleSection.appendChild(errorMessage);
+                    }
+                } else {
+                    // Display all articles
+                    articles.forEach(article => {
+                        const articleElement = document.createElement('article');
+                        articleElement.innerHTML = `
+                            <img src="${article.image}" alt="${article.title} Image">
+                            <h2>${article.title}</h2>
+                            <p>${article.content}</p>
+                        `;
+                        // Add a click event listener to each article
+                articleElement.addEventListener('click', () => {
+                    // Redirect to the detailed view for the clicked article
+                    window.location.href = `?article=${encodeURIComponent(article.title)}`;
                 });
+                        articleSection.appendChild(articleElement);
+                    });
+                }
             })
             .catch(error => console.error('Error fetching articles:', error));
     </script>
