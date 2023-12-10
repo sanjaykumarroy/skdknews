@@ -1,9 +1,258 @@
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>SKDK news</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s ease; /* Smooth transition for night mode */
+        }
+
+        header {
+            background-color: #3498db; /* Blue color for the header */
+            color: white;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        nav {
+            background-color: #2c3e50; /* Dark background for the navigation bar */
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        #buttonContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #2ecc71; /* Green color for buttons */
+            color: white;
+            padding: 15px 20px;
+            border: 2px solid #27ae60; /* Dark green border */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #27ae60; /* Dark green on hover */
+            border-color: #2ecc71; /* Green border on hover */
+        }
+
+        .button:active {
+            transform: scale(0.95); /* Add a unique scale animation for each button */
+        }
+
+        .countdown {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #e74c3c; /* Red color for countdown text */
+        }
+
+        #successCount {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            border: 2px solid #3498db; /* Blue border for success count */
+            background-color: #ecf0f1; /* Light gray background for success count */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #realTime {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+            border: 2px solid #e67e22; /* Orange border for real time */
+            background-color: #f5cba7; /* Light orange background for real time */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #3498db; /* Blue color for the footer */
+            color: white;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+
+        /* Media query for mobile devices */
+        @media (max-width: 600px) {
+            header {
+                font-size: 18px;
+            }
+
+            nav {
+                font-size: 14px;
+            }
+
+            #buttonContainer {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+
+        /* Night mode styles */
+        body.night-mode {
+            background-color: #333;
+            color: white;
+        }
+
+        body.night-mode header, body.night-mode footer {
+            background-color: #111;
+        }
+
+        body.night-mode nav {
+            background-color: #2c3e50;
+        }
+
+        body.night-mode .button {
+            background-color: #555;
+            border-color: #333;
+            color: white;
+        }
+
+        body.night-mode .button:hover {
+            background-color: #333;
+            border-color: #111;
+        }
+
+        body.night-mode .button:active {
+            transform: scale(0.95); /* Add a unique scale animation for each button */
+        }
+    </style>
+    <script>
+        let buttonInProcess = false;
+        let successCount = localStorage.getItem('successCount') || 0;
+
+        function isNetworkAvailable() {
+            return navigator.onLine;
+        }
+
+        function openLinkAndShowSuccess(name, link, button, countdownElement) {
+            if (!isNetworkAvailable()) {
+                alert('Network is not available. Please check your connection.');
+                return;
+            }
+
+            if (buttonInProcess) {
+                return; // Do nothing if the button is already in the timeout process
+            }
+
+            buttonInProcess = true;
+
+            // Directly open the link without "i-prem"
+            window.open(link, '_blank');
+
+            let countdown = 30;
+
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = `Countdown: ${countdown}s`;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    alert(`Success for ${name}!`);
+                    successCount++;
+                    localStorage.setItem('successCount', successCount);
+                    updateSuccessCount();
+                    createButton(); // Create a new button with different name and link
+                    button.style.display = 'none';
+                    buttonInProcess = false; // Reset the flag
+                }
+            }, 1000);
+        }
+
+        function createButton(name, link) {
+            const buttonContainer = document.getElementById('buttonContainer');
+            const button = document.createElement('button');
+            const countdownElement = document.createElement('p');
+            
+            button.className = 'button';
+            button.innerHTML = 'Click me';
+            button.onclick = function() {
+                openLinkAndShowSuccess(name, link, button, countdownElement);
+            };
+
+            countdownElement.className = 'countdown';
+
+            buttonContainer.appendChild(button);
+            buttonContainer.appendChild(countdownElement);
+        }
+
+        function updateSuccessCount() {
+            const countDisplay = document.getElementById('successCount');
+            countDisplay.textContent = `Success Count: ${successCount}`;
+        }
+
+        function updateRealTime() {
+            const realTimeDisplay = document.getElementById('realTime');
+            const currentTime = new Date().toLocaleTimeString();
+            realTimeDisplay.textContent = `Real Time: ${currentTime}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create initial buttons with different names and links
+            createButton('Button 1', 'https://example1.com');
+            createButton('Button 2', 'https://example2.com');
+            createButton('Button 3', 'https://example3.com');
+
+            updateSuccessCount();
+
+            // Update real-time every second
+            setInterval(updateRealTime, 1000);
+        });
+    </script>
+    <title>Button Sequence</title>
 </head>
 <body>
+    <header>
+        <h1>Button App</h1>
+    </header>
 
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Page 1</a>
+        <a href="#">Page 2</a>
+        <a href="#">Page 3</a>
+    </nav>
+
+    <div id="buttonContainer">
+        <!-- Buttons and countdowns will be dynamically added here -->
+    </div>
+
+    <p id="successCount">Success Count: 0</p>
+    <p id="realTime">Real Time: 00:00:00</p>
+
+    <footer>
+        <p>Footer Content</p>
+    </footer>
 </body>
-</html> 
+</html>
