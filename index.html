@@ -42,6 +42,10 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 20px;
+            padding: 10px; /* Added padding for the button container */
+            border: 2px solid #3498db; /* Blue border for the button container */
+            border-radius: 10px; /* Rounded corners for the button container */
+            background-color: #ecf0f1; /* Light gray background for the button container */
         }
 
         .button {
@@ -87,6 +91,15 @@
             border: 2px solid #e67e22; /* Orange border for real time */
             background-color: #f5cba7; /* Light orange background for real time */
             padding: 10px;
+            border-radius: 5px;
+        }
+
+        #currentDate {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+            border: 2px solid #3498db; /* Blue border for date */
+            padding: 5px;
             border-radius: 5px;
         }
 
@@ -221,25 +234,18 @@
 
         function updateRealTime() {
             const realTimeDisplay = document.getElementById('realTime');
-            const currentTime = new Date().toLocaleTimeString();
-            realTimeDisplay.textContent = `Real Time: ${currentTime}`;
+            const currentDateDisplay = document.getElementById('currentDate');
+            const currentTime = new Date();
+            
+            realTimeDisplay.textContent = `Real Time: ${currentTime.toLocaleTimeString()}`;
+            currentDateDisplay.textContent = `Date: ${currentTime.toLocaleDateString()}`;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             // Create initial buttons with different names and links
-            createButton('Button 1', 'https://skdknews.com');
-            createButton('Button 2', 'https://skdknews.com');
-            createButton('Button 3', 'https://skdknews.com');
-
-            createButton('Button 4', 'https://skdknews.com');
-            createButton('Button 5', 'https://skdknews.com');
-            createButton('Button 6', 'https://skdknews.com');
-            createButton('Button 7', 'https://skdknews.com');
-
-            createButton('Button 8', 'https://skdknews.com');
-            createButton('Button 9', 'https://skdknews.com');
-
-            createButton('Button 10', 'https://skdknews.com');
+            createButton('Button 1', 'https://example1.com');
+            createButton('Button 2', 'https://example2.com');
+            createButton('Button 3', 'https://example3.com');
 
             updateSuccessCount();
 
@@ -251,7 +257,7 @@
 </head>
 <body>
     <header>
-        <h1>Gamesgo.vercel.app</h1>
+        <h1>Button App</h1>
     </header>
 
     <nav>
@@ -267,12 +273,13 @@
 
     <p id="successCount">Success Count: 0</p>
     <p id="realTime">Real Time: 00:00:00</p>
+    <p id="currentDate">Date: 01/01/2023</p>
 
     <footer>
-        <a href="#">Home</a>
-        <a href="#">abaut</a>
-        <a href="#">Contact</a>
-        <p>&copy; 2023 Your Company Name: gamesgo </p>
+        <a href="#">Page 1</a>
+        <a href="#">Page 2</a>
+        <a href="#">Page 3</a>
+        <p>&copy; 2023 Your Company Name</p>
     </footer>
 </body>
 </html>
