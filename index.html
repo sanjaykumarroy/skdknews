@@ -74,33 +74,35 @@
             color: #e74c3c; /* Red color for countdown text */
         }
 
-        #successCount {
+        #statusContainer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
             margin-top: 20px;
+            padding: 10px; /* Added padding for the status container */
+            border: 2px solid #3498db; /* Blue border for the status container */
+            border-radius: 10px; /* Rounded corners for the status container */
+            background-color: #ecf0f1; /* Light gray background for the status container */
+        }
+
+        #successCount, #realTime, #currentDate {
+            flex: 1;
+            text-align: center;
+        }
+
+        #successCount {
             font-size: 18px;
             color: #333;
-            border: 2px solid #3498db; /* Blue border for success count */
-            background-color: #ecf0f1; /* Light gray background for success count */
-            padding: 10px;
-            border-radius: 5px;
         }
 
         #realTime {
-            margin-top: 20px;
             font-size: 18px;
             color: #555;
-            border: 2px solid #e67e22; /* Orange border for real time */
-            background-color: #f5cba7; /* Light orange background for real time */
-            padding: 10px;
-            border-radius: 5px;
         }
 
         #currentDate {
-            margin-top: 10px;
             font-size: 14px;
             color: #555;
-            border: 2px solid #3498db; /* Blue border for date */
-            padding: 5px;
-            border-radius: 5px;
         }
 
         footer {
@@ -274,13 +276,15 @@
         <a href="#">Page 3</a>
     </nav>
 
+    <div id="statusContainer">
+        <p id="successCount">Success Count: 0</p>
+        <p id="realTime">Real Time: 00:00:00</p>
+        <p id="currentDate">Date: 01/01/2023</p>
+    </div>
+
     <div id="buttonContainer">
         <!-- Buttons and countdowns will be dynamically added here -->
     </div>
-
-    <p id="successCount">Success Count: 0</p>
-    <p id="realTime">Real Time: 00:00:00</p>
-    <p id="currentDate">Date: 01/01/2023</p>
 
     <footer>
         <a href="#">Page 1</a>
