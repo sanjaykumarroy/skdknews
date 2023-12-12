@@ -6,130 +6,418 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
             margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
+            align-items: center;
             min-height: 100vh;
+            transition: background-color 0.3s ease; /* Smooth transition for night mode */
         }
 
         header {
-            background-color: #3498db;
+            background-color: #3498db; /* Blue color for the header */
             color: white;
-            padding: 15px;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        nav {
+            background-color: #2c3e50; /* Dark background for the navigation bar */
+            padding: 10px;
+            width: 100%;
             text-align: center;
         }
 
-        #sidebar {
-            background-color: #2c3e50;
+        nav a {
             color: white;
-            padding: 20px;
-            width: 250px;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: -250px;
-            transition: left 0.3s ease;
-        }
-
-        #sidebar a {
-            display: block;
-            color: white;
+            margin: 0 15px;
             text-decoration: none;
-            padding: 10px;
-            margin-bottom: 10px;
             font-size: 16px;
-            transition: background-color 0.3s ease;
         }
 
-        #sidebar a:hover {
-            background-color: #34495e;
+        #buttonContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px; /* Added padding for the button container */
+            border: 2px solid #3498db; /* Blue border for the button container */
+            border-radius: 10px; /* Rounded corners for the button container */
+            background-color: #ecf0f1; /* Light gray background for the button container */
         }
 
-        #main-content {
+        .button {
+            background-color: #2ecc71; /* Green color for buttons */
+            color: white;
+            padding: 15px 20px;
+            border: 2px solid #27ae60; /* Dark green border */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #27ae60; /* Dark green on hover */
+            border-color: #2ecc71; /* Green border on hover */
+        }
+
+        .button:active {
+            transform: scale(0.95); /* Add a unique scale animation for each button */
+        }
+
+        .countdown {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #e74c3c; /* Red color for countdown text */
+        }
+
+        #statusContainer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px; /* Added padding for the status container */
+            border: 2px solid #3498db; /* Blue border for the status container */
+            border-radius: 10px; /* Rounded corners for the status container */
+            background-color: #ecf0f1; /* Light gray background for the status container */
+        }
+
+        #successCount, #realTime, #currentDate {
             flex: 1;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
+            text-align: center;
+        }
+
+        #successCount {
+            font-size: 18px;
+            color: #333;
+        }
+
+        #realTime {
+            font-size: 18px;
+            color: #555;
+        }
+
+        #currentDate {
+            font-size: 14px;
+            color: #555;
         }
 
         footer {
-            background-color: #3498db;
+            background-color: #3498db; /* Blue color for the footer */
             color: white;
             padding: 10px;
             text-align: center;
-            margin-top: auto;
+            width: 100%;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+
+        footer a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .articleContainer {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .article {
+            margin: 10px;
+            padding: 20px;
+            border: 2px solid #3498db; /* Blue border for articles */
+            border-radius: 10px; /* Rounded corners for articles */
+            background-color: #ecf0f1; /* Light gray background for articles */
+            width: calc(33.33% - 20px); /* 33.33% width with 20px margin on each side */
+        }
+
+        .article h2 {
+            margin-bottom: 10px;
+        }
+
+        /* Mobile-friendly sidebar styles */
+        .mobile-sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2c3e50; /* Dark background for the sidebar */
+            padding-top: 60px; /* Adjusted padding to avoid overlap with fixed header */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sidebar shadow */
+            z-index: 1;
+            overflow-x: hidden;
+            transition: 0.5s; /* 0.5s transition for smoother effect */
+        }
+
+        .mobile-sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s; /* 0.3s transition for smoother effect */
+        }
+
+        .mobile-sidebar a:hover {
+            background-color: #555; /* Darker background on hover */
+        }
+
+        .mobile-sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Mobile-friendly button to open sidebar */
+        .open-sidebar-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2;
+            color: white;
         }
 
         /* Media query for mobile devices */
-        @media (max-width: 768px) {
-            #sidebar {
-                left: 0;
+        @media (max-width: 600px) {
+            header {
+                font-size: 18px;
             }
 
-            #main-content {
-                margin-left: 250px;
+            nav {
+                font-size: 14px;
+            }
+
+            #buttonContainer {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+            .article {
+                width: calc(100% - 20px); /* Full width with 20px margin on each side */
+            }
+
+            .mobile-sidebar {
+                display: block; /* Show the sidebar on smaller screens */
+            }
+
+            .open-sidebar-btn {
+                display: block; /* Show the button to open the sidebar */
+            }
+
+            #successCount, #realTime, #currentDate {
+                flex-direction: column;
             }
         }
+
+        /* Night mode styles */
+        body.night-mode {
+            background-color: #333;
+            color: white;
+        }
+
+        body.night-mode header, body.night-mode footer {
+            background-color: #111;
+        }
+
+        body.night-mode nav {
+            background-color: #2c3e50;
+        }
+
+        body.night-mode .button {
+            background-color: #555;
+            border-color: #333;
+            color: white;
+        }
+
+        body.night-mode .button:hover {
+            background-color: #333;
+            border-color: #111;
+        }
+
+        body.night-mode .button:active {
+            transform: scale(0.95); /* Add a unique scale animation for each button */
+        }
+
+        body.night-mode .articleContainer {
+            border-color: #555; /* Dark border for night mode articles */
+            background-color: #333; /* Dark background for night mode articles */
+        }
+
+        body.night-mode .article {
+            color: white;
+        }
     </style>
+    <script>
+        let buttonInProcess = false;
+        let successCount = localStorage.getItem('successCount') || 0;
+
+        function isNetworkAvailable() {
+            return navigator.onLine;
+        }
+
+        function playClickSound() {
+            const audio = new Audio('https://www.fesliyanstudios.com/play-mp3/387');
+            audio.play();
+        }
+
+        function openLinkAndShowSuccess(name, link, button, countdownElement) {
+            if (!isNetworkAvailable()) {
+                alert('Network is not available. Please check your connection.');
+                return;
+            }
+
+            if (buttonInProcess) {
+                return; // Do nothing if the button is already in the timeout process
+            }
+
+            buttonInProcess = true;
+
+            playClickSound(); // Play click sound
+
+            // Directly open the link without "i-prem"
+            window.open(link, '_blank');
+
+            let countdown = 30;
+
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = `Countdown: ${countdown}s`;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    alert(`Success for ${name}!`);
+                    successCount++;
+                    localStorage.setItem('successCount', successCount);
+                    updateSuccessCount();
+                    createButton(); // Create a new button with different name and link
+                    button.style.display = 'none';
+                    buttonInProcess = false; // Reset the flag
+                }
+            }, 1000);
+        }
+
+        function createButton(name, link) {
+            const buttonContainer = document.getElementById('buttonContainer');
+            const button = document.createElement('button');
+            const countdownElement = document.createElement('p');
+            
+            button.className = 'button';
+            button.innerHTML = 'Click me';
+            button.onclick = function() {
+                openLinkAndShowSuccess(name, link, button, countdownElement);
+            };
+
+            countdownElement.className = 'countdown';
+
+            buttonContainer.appendChild(button);
+            buttonContainer.appendChild(countdownElement);
+        }
+
+        function updateSuccessCount() {
+            const countDisplay = document.getElementById('successCount');
+            countDisplay.textContent = `Success Count: ${successCount}`;
+        }
+
+        function updateRealTime() {
+            const realTimeDisplay = document.getElementById('realTime');
+            const currentDateDisplay = document.getElementById('currentDate');
+            const currentTime = new Date();
+            
+            realTimeDisplay.textContent = `Real Time: ${currentTime.toLocaleTimeString()}`;
+            currentDateDisplay.textContent = `Date: ${currentTime.toLocaleDateString()}`;
+        }
+
+        function openSidebar() {
+            document.getElementById('sidebar').style.width = '250px';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').style.width = '0';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create initial buttons with different names and links
+            createButton('Button 1', 'https://example1.com');
+            createButton('Button 2', 'https://example2.com');
+            createButton('Button 3', 'https://example3.com');
+
+            updateSuccessCount();
+
+            // Update real-time every second
+            setInterval(updateRealTime, 1000);
+        });
+    </script>
+    <title>Button Sequence</title>
 </head>
 <body>
-    <header>
-        <h1>Professional Website</h1>
-    </header>
-
-    <div id="sidebar">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#contact">Contact</a>
+    <div class="mobile-sidebar" id="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
+        <a href="#">Home</a>
+        <a href="#">Page 1</a>
+        <a href="#">Page 2</a>
+        <a href="#">Page 3</a>
     </div>
 
-    <div id="main-content">
-        <h2 id="home">Home</h2>
-        <p>Welcome to our professional website. This is the home page content.</p>
+    <header>
+        <span class="open-sidebar-btn" onclick="openSidebar()">&#9776;</span>
+        <h1>Button App</h1>
+    </header>
 
-        <h2 id="about">About Us</h2>
-        <p>Learn more about our company and our team on the about page.</p>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Page 1</a>
+        <a href="#">Page 2</a>
+        <a href="#">Page 3</a>
+    </nav>
 
-        <h2 id="services">Our Services</h2>
-        <p>Discover the range of services we offer to our clients.</p>
+    <div id="statusContainer">
+        <p id="successCount">Success Count: 0</p>
+        <p id="realTime">Real Time: 00:00:00</p>
+        <p id="currentDate">Date: 01/01/2023</p>
+    </div>
 
-        <h2 id="portfolio">Portfolio</h2>
-        <p>Explore some of our successful projects in our portfolio section.</p>
+    <div id="buttonContainer">
+        <!-- Buttons and countdowns will be dynamically added here -->
+    </div>
 
-        <h2 id="contact">Contact Us</h2>
-        <p>Get in touch with us. We'd love to hear from you!</p>
+    <div class="articleContainer">
+        <div class="article">
+            <h2>Article 1</h2>
+            <p>This is the content of Article 1. Replace it with your actual article content.</p>
+        </div>
+        <div class="article">
+            <h2>Article 2</h2>
+            <p>This is the content of Article 2. Replace it with your actual article content.</p>
+        </div>
+        <div class="article">
+            <h2>Article 3</h2>
+            <p>This is the content of Article 3. Replace it with your actual article content.</p>
+        </div>
     </div>
 
     <footer>
+        <a href="#">Page 1</a>
+        <a href="#">Page 2</a>
+        <a href="#">Page 3</a>
         <p>&copy; 2023 Your Company Name</p>
     </footer>
-
-    <script>
-        // Toggle sidebar visibility on small screens
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('main-content');
-
-            document.body.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A') {
-                    sidebar.style.left = '-250px';
-                    mainContent.style.marginLeft = '0';
-                }
-            });
-
-            sidebar.addEventListener('click', function() {
-                sidebar.style.left = '0';
-                mainContent.style.marginLeft = '250px';
-            });
-
-            mainContent.addEventListener('click', function() {
-                sidebar.style.left = '-250px';
-                mainContent.style.marginLeft = '0';
-            });
-        });
-    </script>
 </body>
 </html>
