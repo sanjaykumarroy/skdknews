@@ -176,6 +176,11 @@
             return navigator.onLine;
         }
 
+        function playClickSound() {
+            const audio = new Audio('https://www.fesliyanstudios.com/play-mp3/387');
+            audio.play();
+        }
+
         function openLinkAndShowSuccess(name, link, button, countdownElement) {
             if (!isNetworkAvailable()) {
                 alert('Network is not available. Please check your connection.');
@@ -187,6 +192,8 @@
             }
 
             buttonInProcess = true;
+
+            playClickSound(); // Play click sound
 
             // Directly open the link without "i-prem"
             window.open(link, '_blank');
