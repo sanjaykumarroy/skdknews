@@ -6,291 +6,130 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0; /* Light gray background */
             margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
-            transition: background-color 0.3s ease; /* Smooth transition for night mode */
         }
 
         header {
-            background-color: #3498db; /* Blue color for the header */
+            background-color: #3498db;
             color: white;
-            padding: 10px;
-            text-align: center;
-            width: 100%;
-        }
-
-        nav {
-            background-color: #2c3e50; /* Dark background for the navigation bar */
-            padding: 10px;
-            width: 100%;
+            padding: 15px;
             text-align: center;
         }
 
-        nav a {
+        #sidebar {
+            background-color: #2c3e50;
             color: white;
-            margin: 0 15px;
+            padding: 20px;
+            width: 250px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s ease;
+        }
+
+        #sidebar a {
+            display: block;
+            color: white;
             text-decoration: none;
+            padding: 10px;
+            margin-bottom: 10px;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
-        #buttonContainer {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 10px; /* Added padding for the button container */
-            border: 2px solid #3498db; /* Blue border for the button container */
-            border-radius: 10px; /* Rounded corners for the button container */
-            background-color: #ecf0f1; /* Light gray background for the button container */
+        #sidebar a:hover {
+            background-color: #34495e;
         }
 
-        .button {
-            background-color: #2ecc71; /* Green color for buttons */
-            color: white;
-            padding: 15px 20px;
-            border: 2px solid #27ae60; /* Dark green border */
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #27ae60; /* Dark green on hover */
-            border-color: #2ecc71; /* Green border on hover */
-        }
-
-        .button:active {
-            transform: scale(0.95); /* Add a unique scale animation for each button */
-        }
-
-        .countdown {
-            margin-top: 5px;
-            font-size: 12px;
-            color: #e74c3c; /* Red color for countdown text */
-        }
-
-        #statusContainer {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px; /* Added padding for the status container */
-            border: 2px solid #3498db; /* Blue border for the status container */
-            border-radius: 10px; /* Rounded corners for the status container */
-            background-color: #ecf0f1; /* Light gray background for the status container */
-        }
-
-        #successCount, #realTime, #currentDate {
+        #main-content {
             flex: 1;
-            text-align: center;
-        }
-
-        #successCount {
-            font-size: 18px;
-            color: #333;
-        }
-
-        #realTime {
-            font-size: 18px;
-            color: #555;
-        }
-
-        #currentDate {
-            font-size: 14px;
-            color: #555;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
         }
 
         footer {
-            background-color: #3498db; /* Blue color for the footer */
+            background-color: #3498db;
             color: white;
             padding: 10px;
             text-align: center;
-            width: 100%;
-            margin-top: auto; /* Push the footer to the bottom */
-        }
-
-        footer a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 14px;
+            margin-top: auto;
         }
 
         /* Media query for mobile devices */
-        @media (max-width: 600px) {
-            header {
-                font-size: 18px;
+        @media (max-width: 768px) {
+            #sidebar {
+                left: 0;
             }
 
-            nav {
-                font-size: 14px;
+            #main-content {
+                margin-left: 250px;
             }
-
-            #buttonContainer {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .button {
-                width: 100%;
-            }
-        }
-
-        /* Night mode styles */
-        body.night-mode {
-            background-color: #333;
-            color: white;
-        }
-
-        body.night-mode header, body.night-mode footer {
-            background-color: #111;
-        }
-
-        body.night-mode nav {
-            background-color: #2c3e50;
-        }
-
-        body.night-mode .button {
-            background-color: #555;
-            border-color: #333;
-            color: white;
-        }
-
-        body.night-mode .button:hover {
-            background-color: #333;
-            border-color: #111;
-        }
-
-        body.night-mode .button:active {
-            transform: scale(0.95); /* Add a unique scale animation for each button */
         }
     </style>
-    <script>
-        let buttonInProcess = false;
-        let successCount = localStorage.getItem('successCount') || 0;
-
-        function isNetworkAvailable() {
-            return navigator.onLine;
-        }
-
-        function playClickSound() {
-            const audio = new Audio('https://www.fesliyanstudios.com/play-mp3/387');
-            audio.play();
-        }
-
-        function openLinkAndShowSuccess(name, link, button, countdownElement) {
-            if (!isNetworkAvailable()) {
-                alert('Network is not available. Please check your connection.');
-                return;
-            }
-
-            if (buttonInProcess) {
-                return; // Do nothing if the button is already in the timeout process
-            }
-
-            buttonInProcess = true;
-
-            playClickSound(); // Play click sound
-
-            // Directly open the link without "i-prem"
-            window.open(link, '_blank');
-
-            let countdown = 30;
-
-            const countdownInterval = setInterval(() => {
-                countdownElement.textContent = `Countdown: ${countdown}s`;
-                countdown--;
-
-                if (countdown < 0) {
-                    clearInterval(countdownInterval);
-                    alert(`Success for ${name}!`);
-                    successCount++;
-                    localStorage.setItem('successCount', successCount);
-                    updateSuccessCount();
-                    createButton(); // Create a new button with different name and link
-                    button.style.display = 'none';
-                    buttonInProcess = false; // Reset the flag
-                }
-            }, 1000);
-        }
-
-        function createButton(name, link) {
-            const buttonContainer = document.getElementById('buttonContainer');
-            const button = document.createElement('button');
-            const countdownElement = document.createElement('p');
-            
-            button.className = 'button';
-            button.innerHTML = 'Click me';
-            button.onclick = function() {
-                openLinkAndShowSuccess(name, link, button, countdownElement);
-            };
-
-            countdownElement.className = 'countdown';
-
-            buttonContainer.appendChild(button);
-            buttonContainer.appendChild(countdownElement);
-        }
-
-        function updateSuccessCount() {
-            const countDisplay = document.getElementById('successCount');
-            countDisplay.textContent = `Success Count: ${successCount}`;
-        }
-
-        function updateRealTime() {
-            const realTimeDisplay = document.getElementById('realTime');
-            const currentDateDisplay = document.getElementById('currentDate');
-            const currentTime = new Date();
-            
-            realTimeDisplay.textContent = `Real Time: ${currentTime.toLocaleTimeString()}`;
-            currentDateDisplay.textContent = `Date: ${currentTime.toLocaleDateString()}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create initial buttons with different names and links
-            createButton('Button 1', 'https://example1.com');
-            createButton('Button 2', 'https://example2.com');
-            createButton('Button 3', 'https://example3.com');
-
-            updateSuccessCount();
-
-            // Update real-time every second
-            setInterval(updateRealTime, 1000);
-        });
-    </script>
-    <title>Button Sequence</title>
 </head>
 <body>
     <header>
-        <h1>Button App</h1>
+        <h1>Professional Website</h1>
     </header>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Page 1</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
-    </nav>
-
-    <div id="statusContainer">
-        <p id="successCount">Success Count: 0</p>
-        <p id="realTime">Real Time: 00:00:00</p>
-        <p id="currentDate">Date: 01/01/2023</p>
+    <div id="sidebar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
     </div>
 
-    <div id="buttonContainer">
-        <!-- Buttons and countdowns will be dynamically added here -->
+    <div id="main-content">
+        <h2 id="home">Home</h2>
+        <p>Welcome to our professional website. This is the home page content.</p>
+
+        <h2 id="about">About Us</h2>
+        <p>Learn more about our company and our team on the about page.</p>
+
+        <h2 id="services">Our Services</h2>
+        <p>Discover the range of services we offer to our clients.</p>
+
+        <h2 id="portfolio">Portfolio</h2>
+        <p>Explore some of our successful projects in our portfolio section.</p>
+
+        <h2 id="contact">Contact Us</h2>
+        <p>Get in touch with us. We'd love to hear from you!</p>
     </div>
 
     <footer>
-        <a href="#">Page 1</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
         <p>&copy; 2023 Your Company Name</p>
     </footer>
+
+    <script>
+        // Toggle sidebar visibility on small screens
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            document.body.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                    sidebar.style.left = '-250px';
+                    mainContent.style.marginLeft = '0';
+                }
+            });
+
+            sidebar.addEventListener('click', function() {
+                sidebar.style.left = '0';
+                mainContent.style.marginLeft = '250px';
+            });
+
+            mainContent.addEventListener('click', function() {
+                sidebar.style.left = '-250px';
+                mainContent.style.marginLeft = '0';
+            });
+        });
+    </script>
 </body>
 </html>
