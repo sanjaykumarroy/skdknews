@@ -6,65 +6,64 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0; /* Light gray background */
+            background-color: #212121; /* Dark gray background */
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             transition: background-color 0.3s ease; /* Smooth transition for night mode */
+            color: #fff; /* White text color */
         }
 
         header {
-            background-color: #3498db; /* Blue color for the header */
+            background-color: #4CAF50; /* Green color for the header */
             color: white;
-            padding: 10px;
+            padding: 20px;
             text-align: center;
             width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
+            font-size: 24px;
         }
 
         nav {
-            background-color: #2c3e50; /* Dark background for the navigation bar */
+            background-color: #333; /* Dark background for the navigation bar */
             padding: 10px;
             width: 100%;
             text-align: center;
         }
 
         nav a {
-            color: white;
+            color: #fff; /* White text color for navigation links */
             margin: 0 15px;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         #buttonContainer {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 70px;
+            margin-top: 20px;
             padding: 10px; /* Added padding for the button container */
-            border: 2px solid #3498db; /* Blue border for the button container */
+            border: 2px solid #4CAF50; /* Green border for the button container */
             border-radius: 10px; /* Rounded corners for the button container */
-            background-color: #ecf0f1; /* Light gray background for the button container */
+            background-color: #333; /* Dark background for the button container */
         }
 
         .button {
-            background-color: #2ecc71; /* Green color for buttons */
+            background-color: #FF5722; /* Orange color for buttons */
             color: white;
-            padding: 15px 20px;
-            border: 2px solid #27ae60; /* Dark green border */
-            border-radius: 5px;
+            padding: 20px;
+            border: 2px solid #E64A19; /* Dark orange border */
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .button:hover {
-            background-color: #27ae60; /* Dark green on hover */
-            border-color: #2ecc71; /* Green border on hover */
+            background-color: #E64A19; /* Dark orange on hover */
+            border-color: #FF5722; /* Orange border on hover */
         }
 
         .button:active {
@@ -73,7 +72,7 @@
 
         .countdown {
             margin-top: 5px;
-            font-size: 12px;
+            font-size: 14px;
             color: #e74c3c; /* Red color for countdown text */
         }
 
@@ -83,9 +82,9 @@
             width: 100%;
             margin-top: 20px;
             padding: 10px; /* Added padding for the status container */
-            border: 2px solid #3498db; /* Blue border for the status container */
+            border: 2px solid #4CAF50; /* Green border for the status container */
             border-radius: 10px; /* Rounded corners for the status container */
-            background-color: #ecf0f1; /* Light gray background for the status container */
+            background-color: #333; /* Dark background for the status container */
         }
 
         #successCount, #realTime, #currentDate {
@@ -95,33 +94,34 @@
 
         #successCount {
             font-size: 18px;
-            color: #333;
+            color: #fff; /* White text color for success count */
         }
 
         #realTime {
             font-size: 18px;
-            color: #555;
+            color: #fff; /* White text color for real time */
         }
 
         #currentDate {
             font-size: 14px;
-            color: #555;
+            color: #fff; /* White text color for current date */
         }
 
         footer {
-            background-color: #3498db; /* Blue color for the footer */
+            background-color: #4CAF50; /* Green color for the footer */
             color: white;
-            padding: 10px;
+            padding: 20px;
             text-align: center;
             width: 100%;
             margin-top: auto; /* Push the footer to the bottom */
+            font-size: 14px;
         }
 
         footer a {
             color: white;
             margin: 0 15px;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .articleContainer {
@@ -134,82 +134,25 @@
         .article {
             margin: 10px;
             padding: 20px;
-            border: 2px solid #3498db; /* Blue border for articles */
+            border: 2px solid #4CAF50; /* Green border for articles */
             border-radius: 10px; /* Rounded corners for articles */
-            background-color: #ecf0f1; /* Light gray background for articles */
+            background-color: #333; /* Dark background for articles */
             width: calc(33.33% - 20px); /* 33.33% width with 20px margin on each side */
         }
 
         .article h2 {
             margin-bottom: 10px;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #2c3e50; /* Dark background for the sidebar */
-            overflow-x: hidden;
-            transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
-            padding-top: 60px; /* Positioning of the sidebar content */
-        }
-
-        .sidebar a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .sidebar a:hover {
-            color: #f1f1f1;
-        }
-
-        .sidebar .closebtn {
-            position: absolute;
-            top: 0;
-            left: 25px;
-            font-size: 36px;
-            margin-right: 50px;
-        }
-
-        .openbtn {
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #3498db; /* Blue color for the open button */
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 2;
-        }
-
-        .openbtn:hover {
-            background-color: #555; /* Darker blue on hover */
-        }
-
-        @media screen and (max-height: 450px) {
-            .sidebar {padding-top: 15px;}
-            .sidebar a {font-size: 18px;}
+            color: #fff; /* White text color for article titles */
         }
 
         /* Media query for mobile devices */
         @media (max-width: 600px) {
             header {
-                font-size: 18px;
+                font-size: 20px;
             }
 
             nav {
-                font-size: 14px;
+                font-size: 16px;
             }
 
             #buttonContainer {
@@ -344,54 +287,30 @@
             currentDateDisplay.textContent = `Date: ${currentTime.toLocaleDateString()}`;
         }
 
-        function openSidebar() {
-            document.getElementById("mySidebar").style.width = "250px";
-        }
-
-        function closeSidebar() {
-            document.getElementById("mySidebar").style.width = "0";
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             // Create initial buttons with different names and links
-            createButton('Button 1', 'https://example1.com');
-            createButton('Button 2', 'https://example2.com');
-            createButton('Button 3', 'https://example3.com');
+            createButton('Adventure', 'https://example1.com');
+            createButton('Action', 'https://example2.com');
+            createButton('RPG', 'https://example3.com');
 
             updateSuccessCount();
 
             // Update real-time every second
             setInterval(updateRealTime, 1000);
-
-            // Close the sidebar when clicking anywhere on the document
-            document.addEventListener('click', function (event) {
-                if (event.target.closest('.sidebar') === null && event.target.className !== 'openbtn') {
-                    closeSidebar();
-                }
-            });
         });
     </script>
-    <title>Button Sequence</title>
+    <title>Gaming World</title>
 </head>
 <body>
     <header>
-        <button class="openbtn" onclick="openSidebar()">☰ Open Sidebar</button>
-        <h1>Button App</h1>
+        <h1>Gaming World</h1>
     </header>
-
-    <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">×</a>
-        <a href="#">Home</a>
-        <a href="#">Page 1</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
-    </div>
 
     <nav>
         <a href="#">Home</a>
-        <a href="#">Page 1</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
+        <a href="#">Adventure</a>
+        <a href="#">Action</a>
+        <a href="#">RPG</a>
     </nav>
 
     <div id="statusContainer">
@@ -406,24 +325,24 @@
 
     <div class="articleContainer">
         <div class="article">
-            <h2>Article 1</h2>
-            <p>This is the content of Article 1. Replace it with your actual article content.</p>
+            <h2>Adventure</h2>
+            <p>Explore mysterious worlds and embark on epic quests in our thrilling adventure games.</p>
         </div>
         <div class="article">
-            <h2>Article 2</h2>
-            <p>This is the content of Article 2. Replace it with your actual article content.</p>
+            <h2>Action</h2>
+            <p>Experience heart-pounding action and intense battles in our action-packed gaming titles.</p>
         </div>
         <div class="article">
-            <h2>Article 3</h2>
-            <p>This is the content of Article 3. Replace it with your actual article content.</p>
+            <h2>RPG</h2>
+            <p>Create your own story and immerse yourself in rich, interactive narratives with our RPG games.</p>
         </div>
     </div>
 
     <footer>
-        <a href="#">Page 1</a>
-        <a href="#">Page 2</a>
-        <a href="#">Page 3</a>
-        <p>&copy; 2023 Your Company Name</p>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+        <p>&copy; 2023 Gaming World</p>
     </footer>
 </body>
 </html>
