@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta name="monetag" content="867f3b989fec074ba777fa547d9794af">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Website</title>
+    <style>
+        /* General Reset */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* Main Section */
+        main {
+            margin: 50px 20px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Download Page</h1>
+    </header>
+
+    <main>
+        <p>Click the button below to download the file.</p>
+        <button id="download-btn">Download File</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Download Website</p>
+    </footer>
+
+    <script>
+        // JavaScript to trigger file download
+        document.getElementById('download-btn').addEventListener('click', function () {
+            // Specify the file URL
+            const fileUrl = 'https://example.com/path/to/your/file.pdf'; // Replace with your file link
+            const fileName = 'sample-file.pdf'; // Desired file name after download
+
+            // Create an invisible link element
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = fileName;
+
+            // Programmatically click the link to trigger download
+            link.click();
+        });
+    </script>
+</body>
+</html>
